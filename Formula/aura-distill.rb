@@ -8,8 +8,11 @@ class AuraDistill < Formula
   head "https://github.com/tomacco/aura-distill.git", branch: "main"
 
   def install
-    # Install all project files to libexec
-    libexec.install Dir["*"]
+    # Only install files needed by the installer — skip docs, tests, server, etc.
+    libexec.install "install.sh", "VERSION", "LICENSE",
+                    "distill.md", "distill-process.md", "distill-monitor.md",
+                    "banner.txt"
+    (libexec/"rules").install "rules/distill.md"
 
     # Create the `aura-distill` wrapper that runs the installer
     (bin/"aura-distill").write <<~SH
